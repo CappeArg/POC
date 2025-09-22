@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Memotest</title>
+    <title>Memotest de Emojis</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Lilita+One&display=swap');
         :root {
@@ -111,7 +111,6 @@
         .card-front {
             background-color: var(--color-azul-zamba);
             transform: rotateY(180deg);
-            /* Tamaño más grande para el emoji */
             font-size: clamp(2.5em, 10vmin, 6em);
         }
         .resultado {
@@ -141,10 +140,10 @@
         <div id="confetti-container"></div>
         <header>
             <div class="logo-placeholder">LOGO</div>
-            <h1>Memotest Gatitag</h1>
+            <h1>Memotest de Emojis</h1>
         </header>
         <div class="grid-container" id="game-board">
-            </div>
+        </div>
         <div class="resultado">
             <div id="texto-resultado">Encontrá los pares</div>
         </div>
@@ -152,7 +151,6 @@
 
     <script>
         const config = {
-            // Emojis actualizados para ser más claros y evidentes
             emojis: ['🦁', '👩‍⚕️', '🦷', '🍋', '🌕', '🐸'],
             colores: ['#0072BC', '#F7D52E', '#D8262F', '#00964E', '#F26522', '#6F4E9A'],
             tiempoVisible: 2000
@@ -237,8 +235,10 @@
             estado.cartasVolteadas = [];
             estado.puedeVoltear = true;
             
+            // La condición para ganar y lanzar el confeti
             if (estado.paresEncontrados === config.emojis.length) {
                 ui.textoResultado.textContent = '¡Felicitaciones! ¡Ganaste!';
+                // Llamada a la función de confeti que ahora funcionará
                 lanzarConfeti();
             }
         }
