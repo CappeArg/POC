@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Memotest de Emojis</title>
+    <title>Test de Comunicación Infantil</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Lilita+One&display=swap');
         :root {
@@ -11,15 +11,14 @@
             --color-azul-zamba: #0072BC;
             --color-amarillo-zamba: #F7D52E;
             --color-verde-zamba: #00964E;
-            --color-naranja-zamba: #F26522;
-            --color-marron-zamba: #8C5B38;
             --color-texto-oscuro: #2C2C2C;
             --color-borde: #3D2314;
+            --color-fondo-claro: #FFFBF0;
+            --color-fondo-crema: #FDF8E1;
         }
         body {
             font-family: 'Lilita One', cursive;
-            background-color: #FDF8E1;
-            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4cba7' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            background-color: var(--color-fondo-crema);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -30,255 +29,377 @@
         }
         .game-container {
             width: 100%;
-            max-width: 950px;
-            background: #FFFBF0;
+            max-width: 800px;
+            background: var(--color-fondo-claro);
             border-radius: 25px;
             box-shadow: 0 0 0 8px var(--color-borde), 0px 15px 35px rgba(0,0,0,0.2);
             padding: 25px;
             text-align: center;
-            border: 5px solid #FDF8E1;
+            border: 5px solid var(--color-fondo-crema);
             position: relative;
         }
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            padding: 0 10px;
-        }
-        .logo-placeholder {
-            width: 120px;
-            height: 90px;
-            background-color: #f0f0f0;
-            border: 4px dashed var(--color-rojo-zamba);
-            border-radius: 15px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.5em;
-            color: var(--color-rojo-zamba);
-            transform: rotate(-3deg);
-        }
+        .screen { display: none; }
+        .screen.active { display: block; }
+        
         h1 {
             color: var(--color-azul-zamba);
-            font-size: 3em;
-            text-shadow: 4px 4px 0 var(--color-amarillo-zamba), -2px -2px 0 var(--color-rojo-zamba);
-            margin: 0;
-            letter-spacing: 2px;
+            font-size: 2.8em;
+            text-shadow: 3px 3px 0 var(--color-amarillo-zamba);
+            margin-bottom: 20px;
         }
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            perspective: 1000px;
+        h2 {
+            font-size: 2.2em;
+            color: var(--color-rojo-zamba);
+            margin-top: 0;
         }
-        .card {
-            background-color: transparent;
-            width: 100%;
-            aspect-ratio: 1 / 1;
+        p {
+            font-size: 1.4em;
+            color: var(--color-texto-oscuro);
+            line-height: 1.5;
+        }
+        .disclaimer {
+            font-size: 1em;
+            font-style: italic;
+            opacity: 0.8;
+        }
+        button {
+            font-family: 'Lilita One', cursive;
+            padding: 18px 35px;
+            border: 4px solid var(--color-borde);
+            border-radius: 50px;
+            font-size: 1.5em;
+            color: white;
             cursor: pointer;
-            border-radius: 15px;
+            transition: all 0.1s ease-in-out;
+            box-shadow: 0 8px 0 var(--color-borde);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 20px;
+            background-color: var(--color-verde-zamba);
         }
-        .card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
+        button:hover { transform: translateY(-3px); box-shadow: 0 11px 0 var(--color-borde); }
+        button:active { transform: translateY(5px); box-shadow: 0 3px 0 var(--color-borde); }
+        
+        /* Checklist styles */
+        .checklist {
+            list-style: none;
+            padding: 0;
+            text-align: left;
         }
-        .card.flipped .card-inner {
-            transform: rotateY(180deg);
+        .checklist li {
+            font-size: 1.3em;
+            padding: 15px 10px;
+            margin-bottom: 10px;
+            background-color: white;
+            border-radius: 10px;
+            border: 3px solid var(--color-azul-zamba);
+            display: flex;
+            align-items: center;
+            cursor: pointer;
         }
-        .card-face {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            border-radius: 15px;
+        .checklist input[type="checkbox"] {
+            display: none;
+        }
+        .checklist .checkbox-custom {
+            width: 30px;
+            height: 30px;
+            border: 3px solid var(--color-borde);
+            border-radius: 5px;
+            margin-right: 15px;
             display: flex;
             justify-content: center;
             align-items: center;
-            border: 5px solid var(--color-borde);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+        .checklist input[type="checkbox"]:checked + .checkbox-custom {
+            background-color: var(--color-verde-zamba);
+            border-color: var(--color-borde);
+        }
+        .checklist .checkbox-custom::after {
+            content: '✔';
+            color: white;
+            font-size: 20px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .checklist input[type="checkbox"]:checked + .checkbox-custom::after {
+            opacity: 1;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin: 20px 0;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 25px;
+            background-color: #eee;
+            border-radius: 15px;
+            border: 3px solid var(--color-borde);
             overflow: hidden;
         }
-        .card-back {
-            background-color: var(--color-verde-zamba);
-            color: white;
-            border: 4px dashed white;
-            font-size: 1.5em;
-        }
-        .card-front {
-            background-color: var(--color-azul-zamba);
-            transform: rotateY(180deg);
-            font-size: clamp(2.5em, 10vmin, 6em);
-        }
-        .resultado {
-            margin-top: 25px;
-            padding: 20px;
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
             background-color: var(--color-amarillo-zamba);
-            border-radius: 20px;
+            border-radius: 12px 0 0 12px;
+            transition: width 0.3s ease-in-out;
+        }
+        #progress-text {
+            font-size: 1.2em;
+            margin-top: 5px;
+        }
+
+        /* Result Screen */
+        .result-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
             border: 4px solid var(--color-borde);
         }
-        #texto-resultado {
-            font-size: 2em;
-            color: var(--color-texto-oscuro);
-            min-height: 1.5em;
+        .result-card h3 {
+            font-size: 1.8em;
+            color: var(--color-verde-zamba);
+            margin-top: 0;
         }
-        #confetti-container {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; overflow: hidden; z-index: 999;
+        .result-card .checklist li {
+            font-size: 1.1em;
+            background-color: #f9f9f9;
         }
-        @media (max-width: 768px) {
-            h1 { font-size: 2em; }
-            .grid-container { gap: 10px; }
-        }
+
     </style>
 </head>
 <body>
     <div class="game-container">
-        <div id="confetti-container"></div>
-        <header>
-            <div class="logo-placeholder">LOGO</div>
-            <h1>Memotest de Emojis</h1>
-        </header>
-        <div class="grid-container" id="game-board">
+
+        <div id="intro-screen" class="screen active">
+            <h1>¿Qué tipo de comunicador es mi hijo?</h1>
+            <p>Esta es una guía para que puedas saber qué tipo de comunicador es tu hijo, y qué necesidades específicas de lenguaje podría tener.</p>
+            <p>Marca lo que tu hijo hace o dice de manera espontánea en el día a día.</p>
+            <p class="disclaimer">Importante: Esto no constituye un diagnóstico, sino una orientación para que puedas ayudarlo más y mejor. </p>
+            <button id="start-btn">Comenzar Test</button>
         </div>
-        <div class="resultado">
-            <div id="texto-resultado">Encontrá los pares</div>
+
+        <div id="test-screen" class="screen">
+            <h2 id="stage-title"></h2>
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div id="progress-bar-fill" class="progress-bar-fill"></div>
+                </div>
+                <p id="progress-text"></p>
+            </div>
+            <ul id="checklist" class="checklist"></ul>
+            <button id="next-btn">Siguiente</button>
         </div>
+
+        <div id="result-screen" class="screen">
+            <h2>¡Listo! El nivel de tu hijo es:</h2>
+            <div class="result-card">
+                <h3 id="result-title"></h3>
+                <p id="result-description"></p>
+            </div>
+            <div class="result-card">
+                <h3>Próximos Pasos a Estimular:</h3>
+                <ul id="next-steps-list" class="checklist"></ul>
+            </div>
+            <button id="restart-btn">Volver a empezar</button>
+        </div>
+
     </div>
 
     <script>
-        const config = {
-            emojis: ['🦁', '👩‍⚕️', '🦷', '🍋', '🌕', '🐸'],
-            colores: ['#0072BC', '#F7D52E', '#D8262F', '#00964E', '#F26522', '#6F4E9A'],
-            tiempoVisible: 2000
-        };
-
         const ui = {
-            board: document.getElementById('game-board'),
-            textoResultado: document.getElementById('texto-resultado'),
-            confettiContainer: document.getElementById('confetti-container')
+            introScreen: document.getElementById('intro-screen'),
+            testScreen: document.getElementById('test-screen'),
+            resultScreen: document.getElementById('result-screen'),
+            startBtn: document.getElementById('start-btn'),
+            nextBtn: document.getElementById('next-btn'),
+            restartBtn: document.getElementById('restart-btn'),
+            stageTitle: document.getElementById('stage-title'),
+            checklist: document.getElementById('checklist'),
+            progressBarFill: document.getElementById('progress-bar-fill'),
+            progressText: document.getElementById('progress-text'),
+            resultTitle: document.getElementById('result-title'),
+            resultDescription: document.getElementById('result-description'),
+            nextStepsList: document.getElementById('next-steps-list'),
         };
 
-        let estado = {
-            cartasVolteadas: [],
-            paresEncontrados: 0,
-            puedeVoltear: true
-        };
-
-        function mezclar(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
+        const stages = [
+            {
+                name: "Descubridor",
+                items: [
+                    "Llora de diferentes formas",
+                    "Hace sonidos como ahh uhhh ggg y cuuu", // [cite: 280]
+                    "Gira la cabeza hacia un sonido", // [cite: 281]
+                    "Reconoce rostros y voces familiares", // [cite: 282]
+                    "Reconoce su nombre y reacciona al escucharlo", // [cite: 283]
+                    "Te mira cuando le hablas o le cantas y sonríe" // [cite: 284]
+                ]
+            },
+            {
+                name: "Comunicador Intencional",
+                items: [
+                    "Usa gestos como \"no\" y \"adiós\"", // [cite: 298]
+                    "Comprende palabras familiares como mamá, agua, no", // [cite: 299]
+                    "Comprende preguntas como \"¿dónde está mamá?\" mirándola", // [cite: 300]
+                    "Imita acciones como aplaudir y sonidos", // [cite: 301]
+                    "Llama la atención de mamá hacia los objetos o las personas, dando, mostrando o señalando hacia ellos.", // [cite: 302]
+                    "Mira hacia lo que le interesa y luego a mamá (comparte atención)." // [cite: 303]
+                ]
+            },
+            {
+                name: "Comunicador Expresivo",
+                items: [
+                    "Se comunica con palabras y gestos/señas.", // [cite: 318]
+                    "Imita sonidos de animales y también palabras", // [cite: 319]
+                    "Usa entre 10 y 25 palabras", // [cite: 320]
+                    "Comprende nombres de objetos, personas y animales comunes.", // [cite: 321]
+                    "Sigue instrucciones sencillas sin gestos como \"dame un beso\"", // [cite: 322]
+                    "Señala partes del cuerpo, objetos familiares y personas.", // [cite: 323]
+                    "Responde a preguntas como \"¿dónde está la muñeca?\"", // [cite: 326]
+                    "Usa más gestos y palabras que los que usaba antes.", // [cite: 327]
+                    "Responde a preguntas de Si/No" // [cite: 328]
+                ]
+            },
+            {
+                name: "Combinador",
+                items: [
+                    "Combina dos palabras como \"quiero jugo\"", // [cite: 342]
+                    "Comprende preguntas con \"¿quién?\"", // [cite: 343]
+                    "Comprende conceptos espaciales como arriba-abajo, adentro-afuera.", // [cite: 344]
+                    "Escucha cuentos sencillos y cortos.", // [cite: 345]
+                    "Usa al menos 50 palabras", // [cite: 346]
+                    "Acompaña sus palabras con gestos adecuados", // [cite: 347]
+                    "Hace preguntas con la entonación correcta" // [cite: 349]
+                ]
+            },
+            {
+                name: "Narrador",
+                items: [
+                    "Comprende historias cortas con apoyo visual.", // [cite: 362]
+                    "Responde a preguntas de \"qué\", \"dónde\" y \"quién\".", // [cite: 363]
+                    "Identifica opuestos básicos (grande-pequeño, arriba-abajo).", // [cite: 364]
+                    "Forma oraciones simples con sujeto-verbo-objeto (\"El perro corre rápido\").", // [cite: 365]
+                    "Relata experiencias cotidianas con ayuda.", // [cite: 366]
+                    "Usa el lenguaje para interactuar con otros niños (preguntas, juegos).", // [cite: 367]
+                    "Ha adquirido los fonemas P, T, B, M, N, Ñ, K, G, L, J, D, F, CH" // [cite: 369]
+                ]
+            },
+            {
+                name: "Conversador Avanzado",
+                items: [
+                    "Entiende secuencias de eventos (\"Primero nos lavamos las manos, luego comemos\")", // [cite: 383]
+                    "Predice lo que puede pasar en una historia.", // [cite: 384]
+                    "Responde a preguntas de \"por qué\" con ayuda", // [cite: 385]
+                    "Usa conectores básicos (\"y\", \"pero\", \"porque\").", // [cite: 386]
+                    "Elabora oraciones más complejas con detalles (\"Mi gato es blanco y muy grande\").", // [cite: 387]
+                    "Usa su voz para dramatizar emociones en historias y juegos.", // [cite: 388]
+                    "Adquiere el sonido de R simple, pl y br." // [cite: 390]
+                ]
+            },
+            {
+                name: "Creativo",
+                items: [
+                    "Comprende chistes y juegos de palabras sencillos.", // [cite: 406]
+                    "Identifica detalles específicos en narraciones.", // [cite: 407]
+                    "Distingue entre realidad y fantasía en cuentos", // [cite: 408]
+                    "Crea historias con estructura (inicio, desarrollo y final)", // [cite: 409]
+                    "Usa el lenguaje para negociar y explicar ideas", // [cite: 410]
+                    "Juega con rimas, adivinanzas y canciones inventadas.", // [cite: 411]
+                    "Dice correctamente todos los sonidos del habla, incluyendo la RR." // [cite: 412]
+                ]
             }
-            return array;
+        ];
+
+        let currentStageIndex = 0;
+
+        function showScreen(screen) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            screen.classList.add('active');
         }
 
-        function crearTablero() {
-            const mazo = mezclar([...config.emojis, ...config.emojis]);
+        function updateProgress() {
+            const checkboxes = ui.checklist.querySelectorAll('input[type="checkbox"]');
+            const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+            const total = checkboxes.length;
+            const percentage = total > 0 ? (checkedCount / total) * 100 : 0;
+
+            ui.progressBarFill.style.width = `${percentage}%`;
+            ui.progressText.textContent = `${checkedCount} de ${total} marcadas`;
+        }
+
+        function renderStage(index) {
+            const stage = stages[index];
+            ui.stageTitle.textContent = `Etapa ${index + 1}: ${stage.name}`;
+            ui.checklist.innerHTML = '';
             
-            ui.board.innerHTML = '';
-            mazo.forEach((emoji) => {
-                const card = document.createElement('div');
-                card.classList.add('card');
-                card.dataset.id = emoji;
-
-                const cardInner = document.createElement('div');
-                cardInner.classList.add('card-inner');
-
-                const cardBack = document.createElement('div');
-                cardBack.classList.add('card-face', 'card-back');
-                cardBack.textContent = 'LOGO';
-
-                const cardFront = document.createElement('div');
-                cardFront.classList.add('card-face', 'card-front');
-                cardFront.textContent = emoji;
-
-                cardInner.appendChild(cardBack);
-                cardInner.appendChild(cardFront);
-                card.appendChild(cardInner);
-                ui.board.appendChild(card);
-
-                card.addEventListener('click', () => manejarClickCarta(card));
+            stage.items.forEach(item => {
+                const li = document.createElement('li');
+                const id = `item-${index}-${item.replace(/\s+/g, '-')}`;
+                li.innerHTML = `
+                    <label for="${id}" style="display: flex; align-items: center; width: 100%; cursor: pointer;">
+                        <input type="checkbox" id="${id}">
+                        <span class="checkbox-custom"></span>
+                        <span>${item}</span>
+                    </label>
+                `;
+                li.querySelector('input').addEventListener('change', updateProgress);
+                ui.checklist.appendChild(li);
             });
+            updateProgress();
         }
 
-        function manejarClickCarta(carta) {
-            if (!estado.puedeVoltear || carta.classList.contains('flipped') || estado.cartasVolteadas.length >= 2) {
-                return;
-            }
-
-            carta.classList.add('flipped');
-            estado.cartasVolteadas.push(carta);
-
-            if (estado.cartasVolteadas.length === 2) {
-                estado.puedeVoltear = false;
-                revisarCoincidencia();
-            }
-        }
-
-        function revisarCoincidencia() {
-            const [carta1, carta2] = estado.cartasVolteadas;
-            const esCoincidencia = carta1.dataset.id === carta2.dataset.id;
-
-            if (esCoincidencia) {
-                manejarAcierto();
-            } else {
-                manejarError();
-            }
-        }
-
-        function manejarAcierto() {
-            estado.paresEncontrados++;
-            estado.cartasVolteadas = [];
-            estado.puedeVoltear = true;
+        function handleNext() {
+            const totalItems = stages[currentStageIndex].items.length;
+            const checkedItems = ui.checklist.querySelectorAll('input:checked').length;
             
-            // La condición para ganar y lanzar el confeti
-            if (estado.paresEncontrados === config.emojis.length) {
-                ui.textoResultado.textContent = '¡Felicitaciones! ¡Ganaste!';
-                // Llamada a la función de confeti que ahora funcionará
-                lanzarConfeti();
+            if ((checkedItems / totalItems) > 0.5) {
+                currentStageIndex++;
+                if (currentStageIndex < stages.length) {
+                    renderStage(currentStageIndex);
+                } else {
+                    // Completó todas las etapas
+                    showResult(currentStageIndex - 1, true);
+                }
+            } else {
+                showResult(currentStageIndex);
             }
         }
 
-        function manejarError() {
-            setTimeout(() => {
-                estado.cartasVolteadas.forEach(card => card.classList.remove('flipped'));
-                estado.cartasVolteadas = [];
-                estado.puedeVoltear = true;
-            }, config.tiempoVisible);
-        }
+        function showResult(resultIndex, completedAll = false) {
+            const resultStage = stages[resultIndex];
+            ui.resultTitle.textContent = `Es un ${resultStage.name}`;
 
-        function lanzarConfeti() {
-            for (let i = 0; i < 100; i++) {
-                const confeti = document.createElement('div');
-                Object.assign(confeti.style, {
-                    position: 'absolute',
-                    width: `${Math.random() * 10 + 5}px`,
-                    height: confeti.style.width,
-                    backgroundColor: config.colores[Math.floor(Math.random() * config.colores.length)],
-                    opacity: '0.9',
-                    borderRadius: `${Math.random() > 0.5 ? '50%' : '0'}`,
-                    left: `${Math.random() * 100}%`,
-                    top: `-20px`
+            if (completedAll) {
+                ui.resultDescription.textContent = "¡Felicitaciones! Tu hijo ha completado todas las etapas de este test. Es un comunicador muy hábil.";
+                ui.nextStepsList.innerHTML = "<li>¡A seguir conversando y jugando!</li>";
+            } else {
+                ui.resultDescription.textContent = `Esto significa que tu hijo se comunica de manera efectiva usando las habilidades de esta etapa. ¡Es un gran logro!`;
+                const nextStage = stages[resultIndex + 1];
+                ui.nextStepsList.innerHTML = '';
+                nextStage.items.forEach(item => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<span>${item}</span>`;
+                    ui.nextStepsList.appendChild(li);
                 });
-
-                const anim = confeti.animate([
-                    { transform: `translate3d(0, 0, 0) rotate(0deg)` },
-                    { transform: `translate3d(${Math.random() * 200 - 100}px, ${window.innerHeight}px, 0) rotate(${Math.random() * 360}deg)` }
-                ], {
-                    duration: Math.random() * 2000 + 3000,
-                    easing: 'ease-out',
-                });
-                
-                anim.onfinish = () => confeti.remove();
-                ui.confettiContainer.appendChild(confeti);
             }
+            
+            showScreen(ui.resultScreen);
         }
 
-        window.onload = crearTablero;
+        ui.startBtn.addEventListener('click', () => {
+            currentStageIndex = 0;
+            renderStage(currentStageIndex);
+            showScreen(ui.testScreen);
+        });
+
+        ui.nextBtn.addEventListener('click', handleNext);
+        ui.restartBtn.addEventListener('click', () => {
+            showScreen(ui.introScreen);
+        });
+
     </script>
 </body>
 </html>
